@@ -69,6 +69,7 @@
 		}
 
 		public static function render($file, $scope=null) {
+			block::init();
 			extract( (array) $scope = ($scope ? $scope : []) );
 
 			ob_start();
@@ -81,7 +82,7 @@
 		}
 
 	}
-	block::init();
+
 
 
  ?>
