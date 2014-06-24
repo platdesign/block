@@ -30,7 +30,7 @@ Call the following command from your controller to render `example.php` which ex
 
 	<? include 'layout.php'; ?>
 	
-	<? block::start('main'); ?>
+	<? block::start('body.main'); ?>
 		<h1>Content that goes into `<main>`-tag!</h1>
 	<? block::end(); ?>
 
