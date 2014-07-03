@@ -5,23 +5,48 @@
 		private $children = [];
 		public 	$isNew = true;
 
+
+
 		public function __construct($name, $parent=null) {
 			$this->name = $name;
 			$this->parent = $parent ? $parent : $this;
 		}
 
+
+
 		public function __toString() {
-			$content = $this->content;
+
+			$trimmer = "\x0B\0\r\n\t";
+
+
+			$content = ($this->content);
 			foreach($this->children as $child) {
 				$name = $child->nameTrace();
+
+				if( isset(block::$config['comments']) && block::$config['comments'] === true) {
+
+					$preComment = "<!-- Start '$name' -->\n";
+					$postComment = "<!-- End '$name' -->";
+
+					$replacer =
+						$preComment .
+						$child .
+						$postComment;
+				} else {
+					$replacer = $child;
+				}
+
+
 				$content = str_replace(
 					$child->placeholder(),
-					"\n<!-- Start '$name' -->\n".$child."\n<!-- End '$name' -->\n",
+					$replacer,
 					$content
 				);
 			}
 			return $content;
 		}
+
+
 
 
 		public function child($name) {
@@ -41,6 +66,8 @@
 
 		}
 
+
+
 		private function _getChild($name) {
 			if( !isset($this->children[$name]) ) {
 				return $this->children[$name] = new self($name, $this);
@@ -50,9 +77,15 @@
 			}
 		}
 
+
+
+
 		public function placeholder() {
-			return "<!-- Placeholder for block '".$this->nameTrace()."' -->\n";
+			return "<!-- Placeholder for block '".$this->nameTrace()."' -->";
 		}
+
+
+
 
 		public function nameTrace() {
 
@@ -62,6 +95,8 @@
 			return trim($parentTrace.$this->name, '.');
 
 		}
+
+
 
 
 		public function record($type='replace') {
@@ -84,9 +119,14 @@
 			});
 		}
 
+
+
+
 		public function recordOff() {
 			ob_end_clean();
 		}
+
+
 	}
 
  ?>

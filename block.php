@@ -5,7 +5,7 @@
 	final class block {
 		private static $root;
 		private static $stack = [];
-		private static $config = [];
+		public static $config = [];
 
 		private static function stack_on($block) {
 			array_unshift(self::$stack, $block);
@@ -70,16 +70,28 @@
 
 		public static function render($file, $scope=null) {
 			block::init();
+
+			// Remind the current working dirrectory
+			$cwd = getcwd();
+
 			extract( (array) $scope = ($scope ? $scope : []) );
 
+
 			ob_start();
+				chdir(dirname( self::$config['basedir'] .DIRECTORY_SEPARATOR. $file ));
 				include self::$config['basedir'] .DIRECTORY_SEPARATOR. $file;
 				$content = ob_get_contents();
 			ob_end_clean();
 
+
 			self::$root->content = $content;
+
+			// Change directory to the old one
+			chdir($cwd);
+
 			return self::$root;
 		}
+
 
 	}
 
