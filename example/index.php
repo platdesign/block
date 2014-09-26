@@ -1,6 +1,5 @@
 <?php
 
-
 	require '../block.php';
 
 	block::config([
