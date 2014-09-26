@@ -59,6 +59,13 @@ Call the following command from your controller to render `example.php` which ex
 - prepend($name)
 - end()
 - config($config)
+	
+		block::config([
+			'basedir'	=>	dirname(__FILE__), // Set the basedir for includes
+			'comments'	=>	true	// display block-area-comments in html output
+		]);
+
+
 - render($file, $scope=null)
 
 
